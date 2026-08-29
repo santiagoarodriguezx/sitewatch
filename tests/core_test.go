@@ -44,6 +44,17 @@ func TestMeaningfulPriceChangeIgnoresTechnicalNoise(t *testing.T) {
 		t.Fatalf("bad price change: %#v", c)
 	}
 }
+
+func TestDynamicNoiseIsNotMeaningful(t *testing.T) {
+	a, _, _ := extractor.Page("https://example.com", page(t, "dynamic_noise_v1.html"), 200, time.Now())
+	b, _, _ := extractor.Page("https://example.com", page(t, "dynamic_noise_v2.html"), 200, time.Now())
+	if a.Fingerprints.HTML == b.Fingerprints.HTML {
+		t.Fatal("raw HTML should differ")
+	}
+	if !diff.MeaningfulEqual(a, b) || len(diff.Compare(a, b)) != 0 {
+		t.Fatal("technical noise became meaningful")
+	}
+}
 func TestEnterpriseHeadingIsHigh(t *testing.T) {
 	a, _, _ := extractor.Page("https://example.com", page(t, "products_v1.html"), 200, time.Now())
 	b, _, _ := extractor.Page("https://example.com", page(t, "products_v2.html"), 200, time.Now())
