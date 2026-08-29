@@ -1,0 +1,8 @@
+/sitewatch
+/sitewatch.exe
+/data/
+/.smoke/
+*.db
+*.db-shm
+*.db-wal
+coverage.out
