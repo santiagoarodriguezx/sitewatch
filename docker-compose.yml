@@ -1,0 +1,7 @@
+services:
+  sitewatch:
+    build: .
+    command: watch
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
